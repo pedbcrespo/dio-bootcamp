@@ -18,7 +18,7 @@ public class Banco {
     public void visualizarSaldoTodosOsClientes() {
         for(Cliente cliente: listaClientes) {
             acessarCliente(cliente.getCpf(), cliente.getSenha());
-            clienteAcessadoService.imprimirExtrato();
+            informacaoCliente();
             System.out.println("====================");
         }
     }
