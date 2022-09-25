@@ -31,14 +31,17 @@ public class Main {
         banco.adicionaNovoCliente(clienteB);
         banco.adicionaNovoCliente(clienteC);
 
-        banco.acessarInfoCliente("11122233345", "123456");
+        banco.acessarCliente("11122233345", "123456");
         banco.realizarDeposito(1500);
         banco.finalizarAcessoCliente();
 
-        banco.acessarInfoCliente("12312312354", "654321");
+        banco.acessarCliente("12312312354", "654321");
         banco.realizarTransferencia(50.0, "33322211110");
 
-        banco.acessarInfoCliente("33322211110", "111222");
+
+        banco.acessarCliente("33322211110", "111222");
         banco.realizarSaque(100);
+
+        banco.visualizarSaldoTodosOsClientes();
     }
 }

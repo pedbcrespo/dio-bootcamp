@@ -7,19 +7,20 @@ import model.Conta;
 public class ClienteService implements EventosBancarios {
 
     private final Cliente cliente;
-    private final ContaService contaService;
+    private ContaService contaService = null;
 
-    public ClienteService(Cliente cliente, String senha) throws Exception {
+    private final boolean acesso;
+    public ClienteService(Cliente cliente, String senha){
         this.cliente = cliente;
-        boolean acesso = validaSenha(senha);
-        if (!acesso) {
-            throw new Exception("Senha incorreta");
-        }
-        this.contaService = new ContaService(cliente.getContaCliente());
+        this.acesso = validaSenha(senha);
+        if (acesso) {
+            this.contaService = new ContaService(cliente.getContaCliente());
+        } else {System.out.println("Senha incorreta");}
     }
 
     @Override
     public void sacar(double valor) {
+        if(!acesso){return;}
         try {
             contaService.retirarDoSaldo(valor);
         } catch (Exception e) {
@@ -29,11 +30,13 @@ public class ClienteService implements EventosBancarios {
 
     @Override
     public void depositar(double valor) {
+        if(!acesso){return;}
         contaService.adicionaSaldo(valor);
     }
 
     @Override
     public void transferir(double valor, Conta contaDestino) {
+        if(!acesso){return;}
         ContaService contaDestinoService = new ContaService(contaDestino);
         try {
             contaService.retirarDoSaldo(valor);
@@ -45,6 +48,7 @@ public class ClienteService implements EventosBancarios {
 
     @Override
     public void imprimirExtrato() {
+        if(!acesso){return;}
         System.out.println("Cliente: " + cliente.getNome());
         System.out.println("Cpf: " + cliente.getCpf());
         contaService.infoConta();

@@ -15,26 +15,38 @@ public class Banco {
         this.listaClientes = new ArrayList<>();
     }
 
-    public void adicionaNovoCliente(Cliente novoCliente) {
-        this.listaClientes.add(novoCliente);
+    public void visualizarSaldoTodosOsClientes() {
+        for(Cliente cliente: listaClientes) {
+            acessarCliente(cliente.getCpf(), cliente.getSenha());
+            clienteAcessadoService.imprimirExtrato();
+            System.out.println("====================");
+        }
     }
 
-    public void acessarInfoCliente(String cpf, String senha) {
+    public void acessarCliente(String cpf, String senha) {
         if(clienteAcessadoService!=null){
             finalizarAcessoCliente();
         }
         Cliente cliente = buscaCliente(cpf);
         if (cliente == null) {
             System.out.println("Cliente nao encontrado");
-            return;
         }
         try {
             clienteAcessadoService = new ClienteService(cliente, senha);
-            clienteAcessadoService.imprimirExtrato();
         } catch (Exception e) {
-            clienteAcessadoService = null;
             throw new RuntimeException(e);
         }
+    }
+
+    public void adicionaNovoCliente(Cliente novoCliente) {
+        this.listaClientes.add(novoCliente);
+    }
+
+    public void informacaoCliente() {
+        if (clienteAcessadoService == null) {
+            return;
+        }
+        clienteAcessadoService.imprimirExtrato();
     }
 
     public void finalizarAcessoCliente() {
